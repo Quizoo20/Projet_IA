@@ -7,10 +7,14 @@ import os
 df = pd.read_csv('sensor_raw.csv')      # Il faudra peut être re importer les fichiers dans le cas où on a pas enregistré sur github
 df1 = pd.read_csv('features_14.csv')
 
-df.head(50)
+df.head(100)
 
 df = df.drop_duplicates()
 df1 = df.drop_duplicates()
 
 df = df.dropna()
 df1 = df.dropna()
+
+df_cleaned = remove_outliers_iqr(df)
+
+df_cleaned.head(100)
