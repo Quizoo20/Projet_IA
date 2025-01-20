@@ -33,7 +33,7 @@ df_cleaned.head(100)
  
 colonne = df.columns[6]
  
-mean_age = df_cleaned[colonne].mean()
+mean_age = df_cleaned[colonne].mean()           # Les boxplots ont été fait avec le dataframe avant que les valeurs aberrantes soient traitées
 median_age = df_cleaned[colonne].median()
 std_age = df_cleaned[colonne].std()
 range_age = df_cleaned[colonne].max() - df[colonne].min()
