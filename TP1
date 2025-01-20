@@ -18,3 +18,23 @@ df1 = df.dropna()
 df_cleaned = remove_outliers_iqr(df)
 
 df_cleaned.head(100)
+
+
+
+
+
+def remove_outliers_iqr(df):
+    numeric_cols = df.select_dtypes(include='number')  # Colonnes numériques
+    for col in numeric_cols.columns:
+        Q1 = df[col].quantile(0.25)  # 1er quartile
+        Q3 = df[col].quantile(0.75)  # 3e quartile
+        IQR = Q3 - Q1                # Écart interquartile
+        
+        # Définir les bornes
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+        
+        # Filtrer les valeurs dans les bornes
+        df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
+    
+    return df
