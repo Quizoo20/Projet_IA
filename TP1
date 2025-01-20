@@ -2,40 +2,50 @@ import numpy as np
 import pandas as pd
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 df = pd.read_csv('sensor_raw.csv')      # Il faudra peut être re importer les fichiers dans le cas où on a pas enregistré sur github
 df1 = pd.read_csv('features_14.csv')
-
+ 
 df.head(100)
-
+ 
 df = df.drop_duplicates()
 df1 = df.drop_duplicates()
-
+ 
 df = df.dropna()
 df1 = df.dropna()
-
-df_cleaned = remove_outliers_iqr(df)
-
-df_cleaned.head(100)
-
-
-
-
-
+ 
 def remove_outliers_iqr(df):
     numeric_cols = df.select_dtypes(include='number')  # Colonnes numériques
     for col in numeric_cols.columns:
         Q1 = df[col].quantile(0.25)  # 1er quartile
         Q3 = df[col].quantile(0.75)  # 3e quartile
         IQR = Q3 - Q1                # Écart interquartile
-        
         # Définir les bornes
         lower_bound = Q1 - 1.5 * IQR
         upper_bound = Q3 + 1.5 * IQR
-        
         # Filtrer les valeurs dans les bornes
         df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
-    
-    return df
+ 
+df_cleaned = remove_outliers_iqr(df)
+ 
+df_cleaned.head(100)
+ 
+colonne = df.columns[6]
+ 
+mean_age = df_cleaned[colonne].mean()
+median_age = df_cleaned[colonne].median()
+std_age = df_cleaned[colonne].std()
+range_age = df_cleaned[colonne].max() - df[colonne].min()
+ 
+plt.figure(figsize=(10, 5))
+sns.histplot(df_cleaned[colonne].dropna(), kde=True, bins=10, color='blue')
+plt.title(f'Distribution de " {colonne}"')
+plt.xlabel('')
+plt.ylabel('Fréquence')
+plt.show()
+ 
+plt.figure(figsize=(10, 5))
+sns.boxplot(x=df_cleaned[colonne])
+plt.title(f'Boxplot de la colonne "{colonne}"')
+plt.show()
