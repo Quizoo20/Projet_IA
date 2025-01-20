@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 df = pd.read_csv('sensor_raw.csv')      # Il faudra peut être re importer les fichiers dans le cas où on a pas enregistré sur github
